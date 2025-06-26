@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机选择人员和企业</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        
+        background-image: url('bg.png'); /* 设置背景图片 */
+        background-repeat: no-repeat; /* 图片不重复 */
+        background-size: cover; /* 图片铺满背景 */
+        background-position: center; /* 图片居中显示 */
+背景渐变
+        }
+        
+        textarea {
+            width: calc(50% - 30px);
+            height: 100px;
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 20px;
+        }
+        
+        input[type="number"] {
+            width: 50px;
+        }
+        
+        button {
+            margin-top: 10px;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>随机选择人员和企业</h1>
+    <label for="peopleList">人员名单:</label><br>
+    <textarea id="peopleList" placeholder="请输入人员名单，每行一个"></textarea><br>
+    <label for="companyList">企业名单:</label><br>
+    <textarea id="companyList" placeholder="请输入企业名单，每行一个"></textarea><br>
+    <label for="numPeople">选择人数:</label>
+    <input type="number" id="numPeople" min="0"><br>
+    <label for="numCompanies">选择企业数:</label>
+    <input type="number" id="numCompanies" min="0"><br>
+    <button onclick="selectRandom()">随机选择</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function selectRandom() {
+            const peopleInput = document.getElementById('peopleList').value.trim();
+            const companyInput = document.getElementById('companyList').value.trim();
+            const numPeople = parseInt(document.getElementById('numPeople').value, 10) || 0;
+            const numCompanies = parseInt(document.getElementById('numCompanies').value, 10) || 0;
+
+            const peopleArray = peopleInput.split('\n').filter(name => name.trim() !== '');
+            const companyArray = companyInput.split('\n').filter(name => name.trim() !== '');
+
+            const selectedPeople = getRandomItems(peopleArray, numPeople);
+            const selectedCompanies = getRandomItems(companyArray, numCompanies);
+
+            document.getElementById('result').innerHTML = `
+                <h2>随机选择结果</h2>
+                <p><strong>人员:</strong> ${selectedPeople.join(', ')}</p>
+                <p><strong>企业:</strong> ${selectedCompanies.join(', ')}</p>
+            `;
+        }
+
+        function getRandomItems(array, count) {
+            if (count > array.length) return array.slice(); // 如果数量超过数组长度，则返回整个数组
+            const shuffled = array.slice().sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+    </script>
+</body>
+
+</html>
